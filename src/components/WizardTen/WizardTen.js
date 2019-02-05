@@ -1,22 +1,40 @@
 import React,  { Component } from 'react';
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
+
+import {updateFirst, updateLast, updateEmail} from '../../ducks/reducer';
 
 class WizardTen extends Component {
-    render(){
-        return(
-            <div className="parent-div">
-                <div className="vert-align">                    
-                    
-                    <p>What is your name?</p> <br />
+	render(){
+		const {updateFirst, updateLast, updateEmail} = this.props;
+		return(
+			<div className="parent-div">
+				<div className="vert-align">                    
+					<p>What is your name?</p> <br />
 
-                    <input type="text" placeholder="First Name" onChange={this.props.updateFirst}/>
-                    <input type="text" placeholder="Last Name" onChange= {this.props.updateLast}/>
-                    <input type="text" placeholder="email" onChange={this.props.updateEmail}/>
-                    
-                    <Link to="/wEleven"><button className="margin-btn"> Next </button></Link>
-                </div>
-            </div>
-        )
-    }
+					<input type="text" placeholder="First Name" onChange={ev => updateFirst(ev.target.value)}/>
+					<input type="text" placeholder="Last Name" onChange= {ev => updateLast(ev.target.value)}/>
+					<input type="text" placeholder="email" onChange={ev => updateEmail(ev.target.value)}/>
+					
+					<Link to="/wEleven"><button className="margin-btn"> Next </button></Link>
+				</div>
+			</div>
+		)
+	}
 }
-export default WizardTen;
+
+const mapStateToProps = state => {
+	return {
+		firstName: state.firstName,
+		lastName: state.lastName,
+		email: state.email
+	};
+}
+
+const mapDispatchToProps = {
+	updateFirst: updateFirst,
+	updateLast: updateLast,
+	updateEmail: updateEmail
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WizardTen);
